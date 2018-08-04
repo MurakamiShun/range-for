@@ -4,66 +4,48 @@ class range {
 public:
 	class Counter {
 	private:
-		const unsigned count;
-		unsigned i;
+		int end;
+		int i;
 	public:
-		Counter(unsigned start, unsigned end) :
-			count(end),
+		Counter(int start, int arg_end) noexcept :
+			end(arg_end),
 			i(start)
 		{
 		}
-		unsigned operator*() {
+		int operator*() noexcept {
 			return i;
 		}
-		void operator ++() {
+		void operator ++() noexcept {
 			i++;
 		}
-		bool operator!=(Counter&) {
-			return i < count;
+		bool operator!=(const Counter& c) const noexcept {
+			return i < c.end;
 		}
 	} counter;
-	range(unsigned start, unsigned end) :
+	range(unsigned start, unsigned end) noexcept :
 		counter(start, end)
 	{
 	}
-	Counter begin() const {
+	Counter& begin() noexcept {
 		return counter;
 	}
-	Counter end() const {
+	Counter& end() noexcept {
 		return counter;
 	}
 };
 
 class step {
-	public:
-	class Counter {
-	private:
-		const unsigned count;
-		unsigned i;
-	public:
-		Counter(unsigned arg_count) :
-			count(arg_count),
-			i(0)
-		{
-		}
-		unsigned operator*() {
-			return i;
-		}
-		void operator ++() {
-			i++;
-		}
-		bool operator!=(Counter&) {
-			return i < count;
-		}
-	} counter;
-	step(unsigned arg_count) :
-		counter(arg_count)
+private:
+	range::Counter counter;
+public:
+	step(int arg_count) noexcept:
+		counter(0, arg_count)
 	{
 	}
-	Counter begin() const {
+	range::Counter& begin() noexcept {
 		return counter;
 	}
-	Counter end() const {
+	range::Counter& end() noexcept {
 		return counter;
 	}
 };
